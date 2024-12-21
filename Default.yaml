@@ -8,7 +8,7 @@ external-controller: :9090
 proxy-providers:
   SF:
     type: http
-    url: " "
+    url: "改成你的订阅"
     interval: 86400
     path: ./SF.yaml
     health-check:
