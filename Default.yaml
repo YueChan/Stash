@@ -481,7 +481,7 @@ rules:
   - RULE-SET,Apple,苹果服务
   - RULE-SET,China,全球直连
   - RULE-SET,ChinaIp,全球直连,no-resolve
-  - RULE-SET,GoogleFCM,谷歌FCM
+  - RULE-SET,GoogleFCM,谷歌通讯
   - RULE-SET,Netflix,奈飞视频
   - RULE-SET,Netflix_IP,奈飞视频,no-resolve
   - RULE-SET,Microsoft,微软服务
@@ -499,7 +499,7 @@ rules:
   - RULE-SET,Proxy_Domain,节点选择
   - RULE-SET,Instagram,Instagram
   - RULE-SET,Threads,Instagram
-  - RULE-SET,Speedtest,Speedtest
+  - RULE-SET,Speedtest,网络测速
   - RULE-SET,NetEaseMusic,网易音乐
   - RULE-SET,Twitter,Twitter
   - GEOIP,CN,DIRECT
