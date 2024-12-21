@@ -1,0 +1,506 @@
+port: 7890
+socks-port: 7891
+allow-lan: true
+mode: Rule
+log-level: info
+external-controller: :9090
+
+proxy-providers:
+  SF:
+    type: http
+    url: "订阅"
+    interval: 86400
+    path: ./SF.yaml
+    health-check:
+      enable: true
+      interval: 600
+      url: http://cp.cloudflare.com/generate_204
+dns:
+  enable: true
+  ipv6: true
+  listen: 0.0.0.0:53
+  default-nameserver:
+    - 119.29.29.29
+    - 223.5.5.5
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.1/16
+  fake-ip-filter:
+    - '*.lan'
+    - localhost.ptlogin2.qq.com
+    - '+.srv.nintendo.net'
+    - '+.stun.playstation.net'
+    - '+.msftconnecttest.com'
+    - '+.msftncsi.com'
+    - '+.xboxlive.com'
+    - 'msftconnecttest.com'
+    - 'xbox.*.microsoft.com'
+    - '*.battlenet.com.cn'
+    - '*.battlenet.com'
+    - '*.blzstatic.cn'
+    - '*.battle.net'
+  nameserver:
+    - https://doh.pub/dns-query
+    - https://dns.alidns.com/dns-query
+proxies: []
+proxy-groups:
+  - name: 节点选择
+    type: select
+    proxies:
+      - 自动选择
+      - 香港节点
+      - 台湾节点
+      - 狮城节点
+      - 日本节点
+      - 美国节点
+      - 英国节点
+      - 其他节点
+      - 手动切换
+      - DIRECT
+    icon: https://github.com/shindgewongxj/WHATSINStash/raw/main/icon/%24tash.png
+  - name: 手动切换
+    type: select
+    proxies: null
+    icon: https://raw.githubusercontent.com/Semporia/Hand-Painted-icon/master/Universal/Available.png
+    use: [SF]
+    filter: ^((?!套餐|到期|余额|剩余|流量|官网).)*$
+  - name: 自动选择
+    type: url-test
+    url: http://www.gstatic.com/generate_204
+    interval: 300
+    tolerance: 50
+    proxies: null
+    use: [SF]
+    icon: https://raw.githubusercontent.com/Semporia/Hand-Painted-icon/master/Universal/Auto_Speed.png
+    filter: ^((?!套餐|到期|余额|剩余|流量|官网).)*$
+  - name: 电报消息
+    type: select
+    proxies:
+      - 节点选择
+      - 自动选择
+      - 狮城节点
+      - 香港节点
+      - 台湾节点
+      - 日本节点
+      - 美国节点
+      - 手动切换
+      - DIRECT
+    icon: https://raw.githubusercontent.com/Semporia/Hand-Painted-icon/master/Social_Media/Telegram.png
+  - name: OpenAi
+    type: select
+    proxies:
+      - 节点选择
+      - 自动选择
+      - 狮城节点
+      - 香港节点
+      - 台湾节点
+      - 日本节点
+      - 美国节点
+      - 手动切换
+      - DIRECT
+    icon: https://github.com/shindgewongxj/WHATSINStash/raw/main/icon/openai.png
+  - name: 油管视频
+    type: select
+    proxies:
+      - 节点选择
+      - 自动选择
+      - 狮城节点
+      - 香港节点
+      - 台湾节点
+      - 日本节点
+      - 美国节点
+      - 手动切换
+      - DIRECT
+    icon: https://raw.githubusercontent.com/Semporia/Hand-Painted-icon/master/Google_Suite/YouTube.png
+  - name: 奈飞视频
+    type: select
+    proxies:
+      - 节点选择
+      - 自动选择
+      - 狮城节点
+      - 香港节点
+      - 台湾节点
+      - 日本节点
+      - 美国节点
+      - 手动切换
+      - DIRECT
+    icon: https://raw.githubusercontent.com/Semporia/Hand-Painted-icon/master/Universal/Netflix.png
+  - name: 哔哩哔哩
+    type: select
+    proxies:
+      - 全球直连
+      - 台湾节点
+      - 香港节点
+    icon: https://github.com/shindgewongxj/WHATSINStash/raw/main/icon/bilibilitv.png
+  - name: 国外媒体
+    type: select
+    proxies:
+      - 节点选择
+      - 自动选择
+      - 香港节点
+      - 台湾节点
+      - 狮城节点
+      - 日本节点
+      - 美国节点
+      - 手动切换
+      - DIRECT
+    icon: https://raw.githubusercontent.com/Semporia/Hand-Painted-icon/master/Social_Media/Diaspora.png
+  - name: 国内媒体
+    type: select
+    proxies:
+      - DIRECT
+      - 香港节点
+      - 台湾节点
+      - 狮城节点
+      - 日本节点
+      - 手动切换
+    icon: https://raw.githubusercontent.com/Semporia/Hand-Painted-icon/master/Universal/TencentVideo.png
+  - name: Instagram
+    type: select
+    proxies:
+      - 节点选择
+      - 自动选择
+      - 香港节点
+      - 台湾节点
+      - 狮城节点
+      - 日本节点
+      - 美国节点
+      - 其他节点
+      - 手动切换
+    icon: https://raw.githubusercontent.com/Semporia/Hand-Painted-icon/master/Social_Media/Instagram.png
+  - name: Twitter
+    type: select
+    proxies:
+      - 节点选择
+      - 自动选择
+      - 香港节点
+      - 台湾节点
+      - 狮城节点
+      - 日本节点
+      - 美国节点
+      - 手动切换
+    icon: https://raw.githubusercontent.com/Semporia/Hand-Painted-icon/master/Social_Media/Twitter.png
+  - icon: https://raw.githubusercontent.com/Semporia/Hand-Painted-icon/master/Social_Media/TikTok.png
+    name: TikTok
+    proxies:
+      - 节点选择
+      - 日本节点
+      - 美国节点
+      - 台湾节点
+      - 狮城节点
+    type: select
+  - name: 谷歌FCM
+    type: select
+    proxies:
+      - DIRECT
+      - 节点选择
+      - 美国节点
+      - 香港节点
+      - 台湾节点
+      - 狮城节点
+      - 日本节点
+      - 手动切换
+    icon: https://raw.githubusercontent.com/Semporia/Hand-Painted-icon/master/Google_Suite/Google.png
+  - name: WeChat
+    type: select
+    proxies:
+      - DIRECT
+      - 香港节点
+      - 台湾节点
+      - 狮城节点
+      - 日本节点
+      - 手动切换
+    icon: https://raw.githubusercontent.com/Semporia/Hand-Painted-icon/master/Universal/WeChat.png
+  - name: 网易音乐
+    type: select
+    proxies:
+      - DIRECT
+      - 节点选择
+      - 自动选择
+    icon: https://raw.githubusercontent.com/Semporia/Hand-Painted-icon/master/Universal/NetEase_Music.png
+  - name: 微软云盘
+    type: select
+    proxies:
+      - DIRECT
+      - 节点选择
+      - 美国节点
+      - 香港节点
+      - 台湾节点
+      - 狮城节点
+      - 日本节点
+      - 手动切换
+    icon: https://raw.githubusercontent.com/Orz-3/mini/master/Alpha/ASN.png
+  - name: 微软服务
+    type: select
+    proxies:
+      - DIRECT
+      - 节点选择
+      - 美国节点
+      - 香港节点
+      - 台湾节点
+      - 狮城节点
+      - 日本节点
+      - 手动切换
+    icon: https://raw.githubusercontent.com/Semporia/Hand-Painted-icon/master/Universal/Microsoft.png
+  - name: 苹果服务
+    type: select
+    proxies:
+      - DIRECT
+      - 节点选择
+      - 美国节点
+      - 香港节点
+      - 台湾节点
+      - 狮城节点
+      - 日本节点
+      - 手动切换
+    icon: https://github.com/shindgewongxj/WHATSINStash/raw/main/icon/apple.png
+  - name: 全球直连
+    type: select
+    proxies:
+      - DIRECT
+      - 节点选择
+      - 自动选择
+    icon: https://github.com/shindgewongxj/WHATSINStash/raw/main/icon/londoneye.png
+  - name: Speedtest
+    type: select
+    proxies:
+      - DIRECT
+      - 节点选择
+    icon: https://raw.githubusercontent.com/Semporia/Hand-Painted-icon/master/Universal/Speedtest.png
+  - name: 漏网之鱼
+    type: select
+    proxies:
+      - 节点选择
+      - 自动选择
+      - DIRECT
+      - 香港节点
+      - 台湾节点
+      - 狮城节点
+      - 日本节点
+      - 美国节点
+      - 英国节点
+      - 手动切换
+    icon: https://github.com/shindgewongxj/WHATSINStash/raw/main/icon/betahub.png
+  - name: 香港节点
+    type: select
+    proxies: null
+    use: [SF]
+    filter: 港|🇭🇰|香港|HK|Hong
+    icon: https://raw.githubusercontent.com/Semporia/Hand-Painted-icon/master/Rounded_Rectangle/Hong_Kong.png
+  - name: 日本节点
+    type: select
+    proxies: null
+    filter: 日|🇯🇵|日本|JP|Japan
+    use: [SF]
+    icon: https://raw.githubusercontent.com/Semporia/Hand-Painted-icon/master/Rounded_Rectangle/Japan.png
+  - name: 美国节点
+    type: select
+    proxies: null
+    filter: 美|🇺🇸|美国|US|States|American
+    use: [SF]
+    icon: https://raw.githubusercontent.com/Semporia/Hand-Painted-icon/master/Rounded_Rectangle/United_States.png
+  - name: 台湾节点
+    type: select
+    proxies: null
+    filter: 台|🇨🇳|台湾|TW|Tai
+    use: [SF]
+    icon: https://raw.githubusercontent.com/Semporia/Hand-Painted-icon/master/Rounded_Rectangle/Taiwan.png
+  - name: 狮城节点
+    type: select
+    proxies: null
+    filter: 坡|🇸🇬|新加坡|狮城|SG|Singapore
+    use: [SF]
+    icon: https://raw.githubusercontent.com/Semporia/Hand-Painted-icon/master/Rounded_Rectangle/Singapore.png
+  - name: 英国节点
+    type: select
+    proxies: null
+    filter: 🇬🇧|英国|英|英格兰|UK|United Kingdom
+    use: [SF]
+    icon: https://raw.githubusercontent.com/Semporia/Hand-Painted-icon/master/Rounded_Rectangle/United_Kingdom.png
+  - name: 其他节点
+    type: select
+    proxies: null
+    filter: ^((?!套餐|到期|余额|剩余|流量|官网|🇭🇰|港|HK|Hong|🇹🇼|台|TW|Tai|🇯🇵|日|JP|Japan|🇸🇬|坡|狮城|SG|Singapore|🇰🇷|韩|KR|KOR|Korea|🇺🇸|美|US|States|American|🇬🇧|英国|英|英格兰|UK|United Kingdom).)*$
+    icon: https://raw.githubusercontent.com/Semporia/Hand-Painted-icon/master/Rounded_Rectangle/Turkey.png
+    use: [SF]
+rule-providers:
+  # 远程规则集
+  Apple:
+    type: http
+    behavior: classical
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Apple/Apple.yaml
+    path: ./ruleset/Apple.yaml
+    interval: 86400
+  China:
+    type: http
+    behavior: domain
+    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Providers/ChinaDomain.yaml
+    path: ./ruleset/ChinaDomain.yaml
+    interval: 86400
+  ChinaIp:
+    type: http
+    behavior: ipcidr
+    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Providers/ChinaIp.yaml
+    path: ./ruleset/ChinaIp.yaml
+    interval: 86400
+  GoogleFCM:
+    type: http
+    behavior: classical
+    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/GoogleFCM/GoogleFCM.yaml
+    path: ./ruleset/GoogleFCM.yaml
+    interval: 86400
+  Netflix:
+    type: http
+    behavior: classical
+    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Netflix/Netflix.yaml
+    path: ./ruleset/Netflix.yaml
+    interval: 86400
+  Netflix_IP:
+    type: http
+    behavior: ipcidr
+    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Netflix/Netflix_IP.txt
+    path: ./ruleset/Netflix_IP.yaml
+    interval: 86400
+    format: text
+  Microsoft:
+    type: http
+    behavior: classical
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Microsoft/Microsoft.yaml
+    path: ./ruleset/Microsoft.yaml
+    interval: 86400
+  OneDrive:
+    type: http
+    behavior: classical
+    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/OneDrive/OneDrive.yaml
+    path: ./ruleset/OneDrive.yaml
+    interval: 86400
+  WeChat:
+    type: http
+    behavior: classical
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/WeChat/WeChat.yaml
+    path: ./ruleset/WeChat.yaml
+    interval: 86400
+  BiliBili:
+    type: http
+    behavior: classical
+    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/BiliBili/BiliBili.yaml
+    path: ./ruleset/BiliBili.yaml
+    interval: 86400
+  Telegram:
+    type: http
+    behavior: classical
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Telegram/Telegram.yaml
+    path: ./ruleset/Telegram.yaml
+    interval: 86400
+  OpenAI:
+    type: http
+    behavior: classical
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/OpenAI/OpenAI.yaml
+    path: ./ruleset/OpenAI.yaml
+    interval: 86400
+  Twitter:
+    type: http
+    behavior: classical
+    url: https://raw.githubusercontents.com/blackmatrix7/ios_rule_script/master/rule/Clash/Twitter/Twitter.yaml
+    path: ./ruleset/Twitter.yaml
+    interval: 86400
+  YouTube:
+    type: http
+    behavior: classical
+    url: https://raw.githubusercontents.com/blackmatrix7/ios_rule_script/master/rule/Clash/YouTube/YouTube.yaml
+    path: ./ruleset/YouTube.yaml
+    interval: 86400
+  ChinaMedia:
+    type: http
+    behavior: classical
+    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Providers/ChinaMedia.yaml
+    path: ./ruleset/ChinaMedia.yaml
+    interval: 86400
+  GlobalMedia: # 国际媒体
+    type: http
+    behavior: classical
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/GlobalMedia/GlobalMedia.yaml
+    path: ./ruleset/Streaming.yaml
+    interval: 86400
+  Streaming: # 国际媒体
+    type: http
+    behavior: domain
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/GlobalMedia/GlobalMedia_Domain_For_Clash.txt
+    path: ./ruleset/Streaming.yaml
+    interval: 86400
+  Proxy:
+    type: http
+    behavior: classical
+    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Proxy/Proxy.yaml
+    path: ./ruleset/Proxy.yaml
+    interval: 86400
+  Proxy_Domain:
+    type: http
+    behavior: domain
+    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Proxy/Proxy_Domain_For_Clash.txt
+    path: ./ruleset/Proxy_Domain_For_Clash.yaml
+    interval: 86400
+    format: txt
+  Instagram:
+    type: http
+    behavior: classical
+    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Instagram/Instagram.yaml
+    path: ./ruleset/Instagram.yaml
+    interval: 86400
+  Threads:
+    type: http
+    behavior: classical
+    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Threads/Threads.yaml
+    path: ./ruleset/Threads.yaml
+    interval: 86400
+  Speedtest:
+    type: http
+    behavior: classical
+    url: https://ghproxy.com/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Speedtest/Speedtest.yaml
+    path: ./ruleset/Speedtest.yaml
+    interval: 86400
+  NetEaseMusic:
+    type: http
+    behavior: classical
+    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/NetEaseMusic/NetEaseMusic.yaml
+    path: ./ruleset/NetEaseMusic.yaml
+    interval: 86400
+  Lan: # 局域网
+    type: http
+    behavior: classical
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Lan/Lan.yaml
+    path: ./ruleset/lan.yaml
+    interval: 86400
+  TikTok:
+    behavior: classical
+    format: yaml
+    interval: 86400
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/TikTok/TikTok.yaml
+rules:
+  - RULE-SET,TikTok,TikTok
+  # 分流规则引用
+  - RULE-SET,Apple,苹果服务
+  - RULE-SET,China,全球直连
+  - RULE-SET,ChinaIp,全球直连,no-resolve
+  - RULE-SET,GoogleFCM,谷歌FCM
+  - RULE-SET,Netflix,奈飞视频
+  - RULE-SET,Netflix_IP,奈飞视频,no-resolve
+  - RULE-SET,Microsoft,微软服务
+  - RULE-SET,OneDrive,微软云盘
+  - RULE-SET,WeChat,WeChat
+  - RULE-SET,BiliBili,哔哩哔哩
+  - RULE-SET,Telegram,电报消息
+  - RULE-SET,OpenAI,OpenAi
+  - RULE-SET,Telegram,电报消息
+  - RULE-SET,YouTube,油管视频
+  - RULE-SET,ChinaMedia,国内视频
+  - RULE-SET,Streaming,国外视频
+  - RULE-SET,GlobalMedia,国外视频
+  - RULE-SET,Proxy,节点选择
+  - RULE-SET,Proxy_Domain,节点选择
+  - RULE-SET,Instagram,Instagram
+  - RULE-SET,Threads,Instagram
+  - RULE-SET,Speedtest,Speedtest
+  - RULE-SET,NetEaseMusic,网易音乐
+  - RULE-SET,Twitter,Twitter
+  - GEOIP,CN,DIRECT
+  - MATCH,漏网之鱼
